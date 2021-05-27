@@ -1,0 +1,27 @@
+{
+  "name": "postroutes",
+  "version": "1.0.0",
+  "description": "postroutes",
+  "main": "app.js",
+  "dependencies": {
+    "express": "^4.17.1"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "test command"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Stanislav-Palyukhovich/postRoutes.git"
+  },
+  "keywords": [
+    "post",
+    "routes"
+  ],
+  "author": "Stan",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Stanislav-Palyukhovich/postRoutes/issues"
+  },
+  "homepage": "https://github.com/Stanislav-Palyukhovich/postRoutes#readme"
+}
