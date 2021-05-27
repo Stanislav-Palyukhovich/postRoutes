@@ -17,7 +17,7 @@ router.get('/sitemap',function(req,res){
 });
 
 //add the router
-const PORT = process.env.PORT || 3000;
-app.listen(PORT, function() {
-    console.log("Server is listening on port 3000");
-});
+app.use('/', router);
+app.listen(process.env.port || 3000);
+
+console.log('Running at Port 3000');
