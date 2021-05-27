@@ -31,9 +31,9 @@
 <script>
     alert ('123');
     const URL_TRACKPOD = 'https://api.track-pod.com/Order';
-    var order_POST = {
-  "Number": "cv30001-2",
-  "Id": "10000345",
+    var order = {
+  "Number": "cv30001-12345",
+  "Id": "1000034512345",
   "Date": "2021-27-05",
   "Type": "0",
   "ShipperId": "357",
@@ -82,7 +82,7 @@
   ]
 }
     var TRACKPOD_KEY = "61201a3a-83d7-4701-87e4-43094f8d17f1";
-    async function postOrderToTrackPOD(URL, order) {
+
         await fetch(URL, {
             method: 'POST',
             headers: {
@@ -94,9 +94,9 @@
         }).then(() => {
             console.log('This order has been uploaded to Track-POD successfully : "', order_POST.Number, '"');
         });
-    }
+    
 
-    postOrderToTrackPOD(URL_TRACKPOD, order_POST);
+    //postOrderToTrackPOD(URL_TRACKPOD, order_POST);
     
 </script>
 </html>
