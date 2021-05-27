@@ -1,23 +1,13 @@
-const express = require('express');
+const express = require("express");
+const fs = require("fs");
+
 const app = express();
-const path = require('path');
-const router = express.Router();
+const jsonParser = express.json();
 
-router.get('/',function(req,res){
-  res.sendFile(path.join(__dirname+'/index.html'));
-  //__dirname : It will resolve to your project folder.
-});
-
-router.get('/about',function(req,res){
-  res.sendFile(path.join(__dirname+'/about.html'));
-});
-
-router.get('/sitemap',function(req,res){
-  res.sendFile(path.join(__dirname+'/sitemap.html'));
-});
+app.use(express.static(__dirname + "/"));
 
 //add the router
-app.use('/', router);
-app.listen(process.env.port || 3000);
-
-console.log('Running at Port 3000');
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, function() {
+    console.log("Server is listening on port 3000");
+});
