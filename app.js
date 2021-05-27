@@ -4,7 +4,7 @@ const fs = require("fs");
 const app = express();
 const jsonParser = express.json();
 
-app.use(express.static(__dirname + "/"));
+app.use(express.static(__dirname + "/public"));
 
 //add the router
 const PORT = process.env.PORT || 3000;
