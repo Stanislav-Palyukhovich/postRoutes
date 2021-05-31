@@ -1,16 +1,61 @@
 <html>
 <head>
-  <title>Express HTML</title>
+  <title>Upload routes</title>
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css">
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap-theme.min.css">
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js"></script>
+  
+  <script src="https://igniteui.com/js/modernizr.min.js"></script>
+<script src="https://code.jquery.com/jquery-1.9.1.min.js"></script>
+<script src="https://code.jquery.com/ui/1.10.3/jquery-ui.min.js"></script>
+<script src="https://cdn-na.infragistics.com/igniteui/latest/js/infragistics.core.js"></script>
+<script src="https://cdn-na.infragistics.com/igniteui/latest/js/infragistics.lob.js"></script>
+<script src="https://cdn-na.infragistics.com/igniteui/latest/js/modules/infragistics.ext_core.js"></script>
+<script src="https://cdn-na.infragistics.com/igniteui/latest/js/modules/infragistics.ext_collections.js"></script>
+<script src="https://cdn-na.infragistics.com/igniteui/latest/js/modules/infragistics.ext_text.js"></script>
+<script src="https://cdn-na.infragistics.com/igniteui/latest/js/modules/infragistics.ext_io.js"></script>
+<script src="https://cdn-na.infragistics.com/igniteui/latest/js/modules/infragistics.ext_ui.js"></script>
+<script src="https://cdn-na.infragistics.com/igniteui/latest/js/modules/infragistics.documents.core_core.js"></script>
+<script src="https://cdn-na.infragistics.com/igniteui/latest/js/modules/infragistics.ext_collectionsextended.js"></script>
+<script src="https://cdn-na.infragistics.com/igniteui/latest/js/modules/infragistics.excel_core.js"></script>
+<script src="https://cdn-na.infragistics.com/igniteui/latest/js/modules/infragistics.ext_threading.js"></script>
+<script src="https://cdn-na.infragistics.com/igniteui/latest/js/modules/infragistics.ext_web.js"></script>
+<script src="https://cdn-na.infragistics.com/igniteui/latest/js/modules/infragistics.xml.js"></script>
+<script src="https://cdn-na.infragistics.com/igniteui/latest/js/modules/infragistics.documents.core_openxml.js"></script>
+<script src="https://cdn-na.infragistics.com/igniteui/latest/js/modules/infragistics.excel_serialization_openxml.js"></script>
+<link href="https://cdn-na.infragistics.com/igniteui/latest/css/themes/infragistics/infragistics.theme.css" rel="stylesheet"></link>
+<link href="https://cdn-na.infragistics.com/igniteui/latest/css/structure/infragistics.css" rel="stylesheet"></link>
+
+<style>
+  #sampleContainer ol {
+            padding: 0px 0px 0px 15px;
+            margin: 0;
+        }
+
+        #sampleContainer input {
+            margin: 10px 0;
+        }
+        #result {
+            display: none;
+            color: red;
+        }
+                #footer {
+          position: fixed;
+          bottom: 0;
+          width: 100%;
+          height: 17px;
+          background-color: white;
+          z-index: 10000;
+        }
+</style>
+
 </head>
 <body>
   <div style="margin:100px;">
     <nav class="navbar navbar-inverse navbar-static-top">
   <div class="container">
-    <a class="navbar-brand" href="/">Express HTML</a>
+    <p2 class="navbar-brand">Bulk post routes</p2>
     <ul class="nav navbar-nav">
       <li class="active">
         <a href="/">Home</a>
@@ -22,80 +67,181 @@
   </div>
 </nav>
     <div class="jumbotron"  style="padding:40px;">
-      <h1>Hello, world!</h1>
-      <p>This is a simple hero unit, a simple jumbotron-style component for calling extra attention to featured content or information.</p>
-      <p><a class="btn btn-primary btn-lg" href="#" role="button">Learn more</a></p>
+      <div>
+        <ol>
+          <li class="form-row" style="margin-bottom:9px">
+            <p style="margin-bottom:2px">Enter your key from the Track-POD's Settings -> Web API </p>
+            <div class="row">
+              <div class="col-sm-4">
+                <input type="password" class="form-control" id="TPkey" placeholder="X-API-KEY">
+              </div>
+              <div class="row">
+              <button id="submit_key" type="submit" class="w-25 btn btn-primary" style="float:left; margin-left: -10px;">Submit</button>
+              <h5 id="isKeyImported" style="float:left; margin-left: 7px; display: none; color: lightgreen">The key imported</h5>
+            </div>
+          </li>
+          <!--https://syncwithtech.blogspot.com/p/direct-download-link-generator.html-->
+            <li><p>Download this <a href="https://docs.google.com/spreadsheets/d/18KJYAukm4az4QSuBveksjaL-XLZNQeDHdvuJ5OXUHXo/export?format=xlsx" download="">sample  Excel file</a></p></li>
+            <li style="margin-top:-2px">
+              <p>Click Choose File/Browse button below and pick the filled in sample Excel file or other excel file.</p>
+              <div >
+                <p><input style="float:left;" type="file" id="input" accept="application/vnd.ms-excel, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"></input></p>
+                <h5 id="areRoutesSent" style="float:left; display: none; color: lightgreen">POST/Route requests sent. Please check the routes on the Track-POD side.</h5><br><br>
+              </div>
+            </li>
+        </ol>
+        <div id="result"></div>
+        <table id="grid1"></table>
+    </div>
+    <div id="footer"></div>
     </div>
   </div>
 </body>
 <script>
-    const URL_TRACKPOD = 'https://api.track-pod.com/Order';
-    var order_POST = {
-  "Number": "cv30001-2",
-  "Id": "10000345",
-  "Date": "2021-27-05",
-  "Type": "0",
-  "ShipperId": "357",
-  "Shipper": "Sanitex",
-  "DepotId": "1",
-  "Depot": "9 Riverside, Salford M7 1PA",
-  "ClientId": "247",
-  "Client": "Maxima",
-  "AddressId": "13587",
-  "Address": "2 St Josephs Crescent, Liverpool L3 3JF",
-  "AddressLat": "25.290479",
-  "AddressLon": "65.294049",
-  "AddressZone": "Zone 1",
-  "TimeSlotFrom": "2019-02-01T09:00:00",
-  "TimeSlotTo": "2019-02-01T18:00:00",
-  "ServiceTime": "10",
-  "Note": "Only to sign Invoice",
-  "ContactName": "John Doe",
-  "Phone": "+37061191244",
-  "Email": "X-604@maxima.com",
-  "Weight": "50.5",
-  "Volume": "8.54",
-  "Pallets": "3.5",
-  "COD": "20.45",
-  "InvoiceId": "inv0002",
-  "CustomerReferenceId": "ord123/1",
-  "Barcode": "1234567890123",
-  "GoodsList": [
-    {
-      "OrderLineId": "22435324",
-      "GoodsId": "30495",
-      "GoodsName": "Some big mystic box",
-      "GoodsUnit": "pcs.",
-      "Note": "ID3658AAA",
-      "Quantity": "10.5",
-      "Cost": "2.99",
-      "OrderLineBarcode": "1234567890123",
-      "GoodsBarcode": "1234567890123"
-    }
-  ],
-  "CustomFields": [
-    {
-      "Id": "cf_456",
-      "Value": "string"
-    }
-  ]
-}
-    var TRACKPOD_KEY = "61201a3a-83d7-4701-87e4-43094f8d17f1";
-    async function postOrderToTrackPOD(URL, order) {
-        await fetch(URL, {
-            method: 'POST',
-            headers: {
-                'X-API-KEY': TRACKPOD_KEY,
-                'Content-Type': 'application/json',
-                'Accept': 'application/json'
-            },
-            body: JSON.stringify(order)
-        }).then(() => {
-            console.log('This order has been uploaded to Track-POD successfully : "', order_POST.Number, '"');
-        });
-    }
 
-    postOrderToTrackPOD(URL_TRACKPOD, order_POST);
-    
+var key;  //test key 61201a3a-83d7-4701-87e4-43094f8d17f1;
+var isKeySubmitted=0;
+
+function fadeOut (id, time) {
+  var fadeTarget = document.getElementById(id);
+      var fadeEffect = setInterval(function () {
+          if (!fadeTarget.style.opacity) {
+              fadeTarget.style.opacity = 1;
+          }
+          if (fadeTarget.style.opacity > 0) {
+              fadeTarget.style.opacity -= 0.1;
+          } else {
+              clearInterval(fadeEffect);
+          }
+      }, time);
+  }
+
+document.getElementById("submit_key").onclick = function (){
+  if(document.getElementById("TPkey").value==""){
+    alert("The X-API-KEY field is empty");
+    return;
+  }
+  key=document.getElementById("TPkey").value;
+  isKeySubmitted=1;
+  document.getElementById("isKeyImported").style.display = "block";
+  //setTimeout(() => {  document.getElementById("isKeyImported").style.display = "none"; }, 1000);
+  
+  fadeOut("isKeyImported", 200);
+}
+
+//processing Excel script
+{
+  $(function () {
+            $("#input").on("change", function () {
+              if(isKeySubmitted == 0){
+                alert("X-API-KEY is not submitted");
+                return;
+              }
+              document.getElementById("areRoutesSent").style.display = "block";
+              fadeOut("areRoutesSent", 800)
+                var excelFile,
+                    fileReader = new FileReader();
+
+                $("#result").hide();
+
+                fileReader.onload = function (e) {
+                    var buffer = new Uint8Array(fileReader.result);
+
+                    $.ig.excel.Workbook.load(buffer, function (workbook) {
+                        var column, row, newRow, cellValue, columnIndex, i,
+                            worksheet = workbook.worksheets(0),
+                            columnsNumber = 0,
+                            gridColumns = [],
+                            data = [],
+                            worksheetRowsCount;
+
+                        // Both the columns and rows in the worksheet are lazily created and because of this most of the time worksheet.columns().count() will return 0
+                        // So to get the number of columns we read the values in the first row and count. When value is null we stop counting columns:
+                        while (worksheet.rows(0).getCellValue(columnsNumber)) {
+                            columnsNumber++;
+                        }
+
+                        // Iterating through cells in first row and use the cell text as key and header text for the grid columns
+                        for (columnIndex = 0; columnIndex < columnsNumber; columnIndex++) {
+                            column = worksheet.rows(0).getCellText(columnIndex);
+                            gridColumns.push({ headerText: column, key: column });
+                        }
+
+                        // We start iterating from 1, because we already read the first row to build the gridColumns array above
+                        // We use each cell value and add it to json array, which will be used as dataSource for the grid
+                        for (i = 1, worksheetRowsCount = worksheet.rows().count() ; i < worksheetRowsCount; i++) {
+                            newRow = {};
+                            row = worksheet.rows(i);
+
+                            for (columnIndex = 0; columnIndex < columnsNumber; columnIndex++) {
+                                cellValue = row.getCellText(columnIndex);
+                                newRow[gridColumns[columnIndex].key] = cellValue;
+                            }
+
+                            data.push(newRow);
+                        }
+                        async function asyncPost(){
+                          for (i=0;i<data.length;i++){
+                              await postRoute({"key":key,"route":data[i]}).then(function(result) {
+                              console.log(result); 
+                            })
+                          }
+                        }
+                        asyncPost();
+                        
+
+                        // we can also skip passing the gridColumns use autoGenerateColumns = true, or modify the gridColumns array
+                        createGrid(data, gridColumns);
+                    }, function (error) {
+                        $("#result").text("The excel file is corrupted.");
+                        $("#result").show(1000);
+                    });
+                }
+
+                if (this.files.length > 0) {
+                    excelFile = this.files[0];
+                    if (excelFile.type === "application/vnd.ms-excel" || excelFile.type === "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" || (excelFile.type === "" && (excelFile.name.endsWith("xls") || excelFile.name.endsWith("xlsx")))) {
+                        fileReader.readAsArrayBuffer(excelFile);
+                    } else {
+                        $("#result").text("The format of the file you have selected is not supported. Please select a valid Excel file ('.xls, *.xlsx').");
+                        $("#result").show(1000);
+                    }
+                }
+
+            })
+        });
+
+        function createGrid(data, gridColumns) {
+            if ($("#grid1").data("igGrid") !== undefined) {
+                $("#grid1").igGrid("destroy");
+            }
+
+            $("#grid1").igGrid({
+                columns: gridColumns,
+                autoGenerateColumns: true,
+                dataSource: data,
+                width: "100%"
+            });
+        }
+}
+
+  async function postRoute(routeObject) {
+            
+            const response = await fetch("api/route", {
+                method: "POST",
+                headers: {
+                    "Accept": "application/json",
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    value: routeObject
+                })
+            });
+            if (response.ok === true) {
+                const x = await response.json();
+                //console.log(x.statusCode);
+                return x.statusCode;
+            }
+          }      
 </script>
 </html>
