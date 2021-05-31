@@ -9,7 +9,6 @@ app.use(express.static(__dirname + "/public"));
 
 var https = require('https');
 
-var key;
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({
@@ -74,6 +73,11 @@ app.post("/api/route", function(req, res) {
     res.send({"status":res.statusCode});
 
 });
+
+const path = require('path');
+app.get('/about',function(req,res){
+    res.sendFile(path.join(__dirname+'/about.html'));
+  });
 
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, function() {

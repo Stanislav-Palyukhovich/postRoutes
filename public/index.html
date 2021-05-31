@@ -86,7 +86,7 @@
               <p>Click Choose File/Browse button below and pick the filled in sample Excel file or other excel file.</p>
               <div >
                 <p><input style="float:left;" type="file" id="input" accept="application/vnd.ms-excel, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"></input></p>
-                <h5 id="areRoutesSent" style="float:left; display: none; color: lightgreen">POST/Route requests executed. Please check the routes on the Track-POD side.</h5><br><br>
+                <h5 id="areRoutesSent" style="float:left; display: none; color: lightgreen; margin-bottom:-70px">POST/Route requests executed. Please check the routes on the Track-POD side.</h5><br>
               </div>
             </li>
         </ol>
@@ -138,7 +138,8 @@ document.getElementById("submit_key").onclick = function (){
                 return;
               }
               document.getElementById("areRoutesSent").style.display = "block";
-              fadeOut("areRoutesSent", 800)
+              setTimeout(() => {  document.getElementById("areRoutesSent").style.display = "none"; }, 3000);
+
                 var excelFile,
                     fileReader = new FileReader();
 
